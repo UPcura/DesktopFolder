@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>true</UseWindowsForms>
+		<LangVersion>10</LangVersion>
+		<Platforms>AnyCPU;x64</Platforms>
+		<ApplicationIcon>folder.ico</ApplicationIcon>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnableDefaultPageItems>false</EnableDefaultPageItems>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="App.xaml.cs" />
+		<Compile Include="ColumnWidthConverter.cs" />
+		<Compile Include="FolderData.cs" />
+		<Compile Include="FolderManagerWindow.xaml.cs" />
+		<Compile Include="FolderWindow.xaml.cs" />
+		<Compile Include="IconExtractor.cs" />
+		<Compile Include="MainWindow.xaml.cs" />
+		<Compile Include="RelayCommand.cs" />
+		<Compile Include="Settings.cs" />
+		<Compile Include="SettingsWindow.xaml.cs" />
+		<Compile Include="ShortcutItem.cs" />
+		<Compile Include="GlobalUsings.cs" />
+
+		<Page Include="App.xaml" />
+		<Page Include="FolderManagerWindow.xaml" />
+		<Page Include="FolderWindow.xaml" />
+		<Page Include="MainWindow.xaml" />
+		<Page Include="SettingsWindow.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="folder.ico">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="App.config" />
+	</ItemGroup>
+
+</Project>

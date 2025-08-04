@@ -1,0 +1,111 @@
+﻿ <Window x:Class="DesktopFolder.FolderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DesktopFolder"
+        mc:Ignorable="d"
+        Title="Папка"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        SizeToContent="WidthAndHeight" ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        Deactivated="Window_Deactivated"
+        Activated="Window_Activated"
+        AllowDrop="True" 
+        Drop="Window_Drop"
+        Name="FolderWindowControl">
+
+    <Window.Resources>
+        <Style x:Key="ShortcutButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#33FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Border x:Name="CollapsedView" Background="#33000000" CornerRadius="10" Padding="8" Cursor="Hand"
+                PreviewMouseLeftButtonDown="CollapsedView_PreviewMouseLeftButtonDown"
+                PreviewMouseMove="CollapsedView_PreviewMouseMove"
+                PreviewMouseLeftButtonUp="CollapsedView_PreviewMouseLeftButtonUp">
+            <StackPanel HorizontalAlignment="Center" IsHitTestVisible="False">
+                <Grid Width="64" Height="64">
+                    <Image x:Name="IconPreview3" Source="{Binding Items[2].Icon}" Margin="8,0,0,8" Opacity="0.7"/>
+                    <Image x:Name="IconPreview2" Source="{Binding Items[1].Icon}" Margin="4,4,4,4" Opacity="0.8"/>
+                    <Image x:Name="IconPreview1" Source="{Binding Items[0].Icon}" Margin="0,8,8,0"/>
+                </Grid>
+                <TextBox x:Name="FolderNameCollapsed" Text="{Binding FolderName}" 
+                         Foreground="White" Background="Transparent" BorderThickness="0" 
+                         TextAlignment="Center" IsReadOnly="True" FontWeight="SemiBold"
+                         TextWrapping="Wrap" MaxWidth="80"/>
+            </StackPanel>
+        </Border>
+
+        <Border x:Name="ExpandedView" Visibility="Collapsed" Background="#D0282828" BorderBrush="#55FFFFFF" BorderThickness="1"
+                CornerRadius="15" MinWidth="250" MinHeight="200">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="Transparent" MouseLeftButtonDown="ExpandedHeader_MouseLeftButtonDown">
+                    <TextBox x:Name="FolderNameExpanded" Text="{Binding FolderName, Mode=TwoWay}" Margin="15,10" FontSize="18" FontWeight="Bold"
+                             Foreground="White" Background="Transparent" BorderThickness="0" TextAlignment="Center" />
+                </Border>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                              Name="ItemsScrollViewer">
+                    <ItemsControl ItemsSource="{Binding Items}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <!-- Изменено WrapPanel на UniformGrid -->
+                                <UniformGrid 
+                                    Margin="10"
+                                    Rows="0" 
+                                    Columns="{Binding IconsPerRow}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding DataContext.LaunchAppCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding FilePath}"
+                                        Style="{StaticResource ShortcutButtonStyle}">
+                                    <StackPanel Margin="5">
+                                        <!-- Обновлено отображение иконки -->
+                                        <Image Source="{Binding Icon}" 
+                                               Stretch="Uniform"
+                                               MaxWidth="120"
+                                               MinWidth="70"
+                                               MaxHeight="120"/>
+                                        <TextBlock Text="{Binding Name}" 
+                                                   Foreground="White" 
+                                                   TextWrapping="Wrap" 
+                                                   TextAlignment="Center" 
+                                                   Margin="0,5,0,0"
+                                                   MaxWidth="120"/>
+                                    </StackPanel>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
